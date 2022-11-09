@@ -23,9 +23,8 @@ export default class Home extends Component {
     }, this.isFormFilled);
   };
 
-  handdleButtonSearch = () => {
-    const { searchInput } = this.state;
-    api.getProductsFromCategoryAndQuery(searchInput)
+  handdleButtonSearch = (searchValue) => {
+    api.getProductsFromCategoryAndQuery(searchValue)
       .then((response) => {
         this.setState({ productsList: response.results });
       }, this.validatedList());
@@ -66,7 +65,7 @@ export default class Home extends Component {
         <button
           type="button"
           id="seach-input-button"
-          onClick={ this.handdleButtonSearch }
+          onClick={ () => this.handdleButtonSearch(searchInput) }
           data-testid="query-button"
         >
           Procurar
@@ -83,7 +82,13 @@ export default class Home extends Component {
           {categories.map(({ id, name }) => (
             <label key={ id } htmlFor={ id } data-testid="category">
               { name }
-              <input type="radio" value={ name } name="categories" id={ id } />
+              <input
+                type="radio"
+                value={ name }
+                name="categories"
+                id={ id }
+                onClick={ () => this.handdleButtonSearch(id) }
+              />
             </label>
           ))}
         </section>
