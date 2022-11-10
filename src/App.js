@@ -8,8 +8,21 @@ import ProductItem from './ pages/ProductItem';
 function App() {
   return (
     <Switch>
-      <Route exact path="/" component={ Home } />
-      <Route exact path="/cart" component={ Cart } />
+      <Route
+        exact
+        path="/"
+        render={
+          (params) => (
+            <Home
+              { ...params }
+            />)
+        }
+      />
+      <Route
+        exact
+        path="/cart"
+        render={ (params) => <Cart { ...params } /> }
+      />
       <Route exact path="/product/:id" component={ ProductItem } />
     </Switch>
   );
