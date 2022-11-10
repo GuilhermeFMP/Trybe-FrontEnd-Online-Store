@@ -30,6 +30,13 @@ export default class Home extends Component {
       }, this.validatedList());
   };
 
+  getCategory = ({ target }) => {
+    const { id } = target;
+    api.getCategoryById(id).then((response) => {
+      this.setState({ productsList: response.results, isSearched: true });
+    });
+  };
+
   validatedList = () => {
     const { productsList } = this.state;
     const minLenght = 0;
@@ -87,7 +94,7 @@ export default class Home extends Component {
                 value={ name }
                 name="categories"
                 id={ id }
-                onClick={ () => this.handdleButtonSearch(id) }
+                onClick={ this.getCategory }
               />
             </label>
           ))}
