@@ -105,15 +105,21 @@ export default class Home extends Component {
           {
             isSearched
             && productsList.map((prod) => (
-              <div key={ prod.id } data-testid="product">
-                <h3>{ prod.title }</h3>
-                <img src={ prod.thumbnail } alt={ prod.title } />
-                <p>
-                  R$
-                  {' '}
-                  { prod.price }
-                </p>
-              </div>
+              <Link
+                data-testid="product-detail-link"
+                key={ prod.id }
+                to={ `/product/${prod.id}` }
+              >
+                <div key={ prod.id } data-testid="product">
+                  <h3>{ prod.title }</h3>
+                  <img src={ prod.thumbnail } alt={ prod.title } />
+                  <p>
+                    R$
+                    {' '}
+                    { prod.price }
+                  </p>
+                </div>
+              </Link>
             ))
           }
           {
