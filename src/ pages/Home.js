@@ -51,6 +51,29 @@ export default class Home extends Component {
     this.setState({ categories });
   };
 
+  addToCart = (product) => {
+    let cartList = JSON.parse(localStorage.getItem('cartList'));
+    if (cartList === null) {
+      cartList = [];
+    }
+    const { id, title, price, thumbnail } = product;
+    const alreadySaved = cartList.some((item) => item.id === id);
+    if (alreadySaved === true) {
+      cartList.forEach((item) => { if (item.id === id) { item.amout += 1; } });
+      localStorage.setItem('cartList', JSON.stringify(cartList));
+    } else {
+      const object = {
+        id,
+        title,
+        price,
+        thumbnail,
+        amout: 1,
+      };
+      cartList.push(object);
+      localStorage.setItem('cartList', JSON.stringify(cartList));
+    }
+  };
+
   render() {
     const {
       productsList, categories, searchInput,
@@ -77,7 +100,6 @@ export default class Home extends Component {
         >
           Procurar
         </button>
-
         {
           productsList.length === 0
           && (
@@ -99,27 +121,38 @@ export default class Home extends Component {
             </label>
           ))}
         </section>
-        <Link to="/cart" data-testid="shopping-cart-button" />
+        <Link to="/cart" data-testid="shopping-cart-button">
+          <p>Carrinho</p>
+        </Link>
 
         <section>
           {
             isSearched
             && productsList.map((prod) => (
-              <Link
-                data-testid="product-detail-link"
-                key={ prod.id }
-                to={ `/product/${prod.id}` }
-              >
-                <div key={ prod.id } data-testid="product">
-                  <h3>{ prod.title }</h3>
-                  <img src={ prod.thumbnail } alt={ prod.title } />
-                  <p>
-                    R$
-                    {' '}
-                    { prod.price }
-                  </p>
-                </div>
-              </Link>
+              <>
+                <Link
+                  data-testid="product-detail-link"
+                  key={ prod.id }
+                  to={ `/product/${prod.id}` }
+                >
+                  <div key={ prod.id } data-testid="product">
+                    <h3>{ prod.title }</h3>
+                    <img src={ prod.thumbnail } alt={ prod.title } />
+                    <p>
+                      R$
+                      {' '}
+                      { prod.price }
+                    </p>
+                  </div>
+                </Link>
+                <button
+                  type="button"
+                  onClick={ () => this.addToCart(prod) }
+                  data-testid="product-add-to-cart"
+                >
+                  Adicionar ao Carrinho
+                </button>
+              </>
             ))
           }
           {
