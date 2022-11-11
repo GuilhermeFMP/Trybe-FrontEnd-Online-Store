@@ -8,7 +8,10 @@ export default class Cart extends React.Component {
 
   componentDidMount() {
     const cartList = JSON.parse(localStorage.getItem('cartList'));
-    this.setState({ cartList, isEmpty: false });
+    this.setState({ cartList });
+    if (cartList !== null) {
+      this.setState({ isEmpty: false });
+    }
   }
 
   render() {
